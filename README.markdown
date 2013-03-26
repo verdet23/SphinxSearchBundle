@@ -1,6 +1,6 @@
 About SphinxsearchBundle
 ========================
-
+This bundle is a fork of [timewasted/Search-SphinxsearchBundle](https://github.com/timewasted/Search-SphinxsearchBundle).
 
 
 Installation:
@@ -74,6 +74,7 @@ License:
 
 ```
 Copyright (c) 2012, Ryan Rogers
+Copyright (c) 2013, Igor Khokhlov
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
