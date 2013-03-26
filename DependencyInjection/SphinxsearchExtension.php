@@ -1,6 +1,6 @@
 <?php
 
-namespace Search\SphinxsearchBundle\DependencyInjection;
+namespace Verdet\SphinxSearchBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
@@ -11,41 +11,47 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class SphinxsearchExtension extends Extension
 {
-	public function load(array $configs, ContainerBuilder $container)
-	{
-		$processor = new Processor();
-		$configuration = new Configuration();
+    /**
+     * {@inheritDoc}
+     */
+    public function load(array $configs, ContainerBuilder $container)
+    {
+        $processor = new Processor();
+        $configuration = new Configuration();
 
-		$config = $processor->processConfiguration($configuration, $configs);
+        $config = $processor->processConfiguration($configuration, $configs);
 
-		$loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
-		$loader->load('sphinxsearch.xml');
+        $loader->load('sphinxsearch.xml');
 
-		/**
-		 * Indexer.
-		 */
-		if( isset($config['indexer']) ) {
-			$container->setParameter('search.sphinxsearch.indexer.bin', $config['indexer']['bin']);
-		}
+        /**
+         * Indexer.
+         */
+        $container->setParameter('search.sphinxsearch.indexer.sudo', $config['indexer']['sudo']);
+        $container->setParameter('search.sphinxsearch.indexer.bin', $config['indexer']['bin']);
+        $container->setParameter('search.sphinxsearch.indexer.config', $config['indexer']['config']);
 
-		/**
-		 * Indexes.
-		 */
-		$container->setParameter('search.sphinxsearch.indexes', $config['indexes']);
+        /**
+         * Indexes.
+         */
+        $container->setParameter('search.sphinxsearch.indexes', $config['indexes']);
 
-		/**
-		 * Searchd.
-		 */
-		if( isset($config['searchd']) ) {
-			$container->setParameter('search.sphinxsearch.searchd.host', $config['searchd']['host']);
-			$container->setParameter('search.sphinxsearch.searchd.port', $config['searchd']['port']);
-			$container->setParameter('search.sphinxsearch.searchd.socket', $config['searchd']['socket']);
-		}
-	}
+        /**
+         * Searchd.
+         */
+        if (isset($config['searchd'])) {
+            $container->setParameter('search.sphinxsearch.searchd.host', $config['searchd']['host']);
+            $container->setParameter('search.sphinxsearch.searchd.port', $config['searchd']['port']);
+            $container->setParameter('search.sphinxsearch.searchd.socket', $config['searchd']['socket']);
+        }
+    }
 
-	public function getAlias()
-	{
-		return 'sphinxsearch';
-	}
+    /**
+     * {@inheritDoc}
+     */
+    public function getAlias()
+    {
+        return 'sphinxsearch';
+    }
 }

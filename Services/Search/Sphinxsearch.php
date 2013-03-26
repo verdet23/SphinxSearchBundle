@@ -1,6 +1,6 @@
 <?php
 
-namespace Search\SphinxsearchBundle\Services\Search;
+namespace Verdet\SphinxSearchBundle\Services\Search;
 
 class Sphinxsearch
 {

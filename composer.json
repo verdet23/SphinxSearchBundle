@@ -1,14 +1,14 @@
 {
-  "name": "search/sphinxsearch-bundle",
+  "name": "verdet/sphinxsearch-bundle",
   "type": "symfony-bundle",
   "description": "Sphinx search bundle for Symfony 2",
   "keywords": ["sphinx", "sphinxsearch", "symfony2"],
-  "homepage": "https://github.com/timewasted/Search-SphinxsearchBundle",
+  "homepage": "https://github.com/verdet23/SphinxsearchBundle",
   "license": "BSD-2-Clause",
   "authors": [
     {
-      "name": "Ryan Rogers",
-      "email": "ryan@timewasted.me"
+        "name": "Igor Khokhlov",
+        "homepage": "https://github.com/verdet23/"
     }
   ],
   "require": {
@@ -16,8 +16,8 @@
   },
   "autoload": {
     "psr-0": {
-      "Search\\SphinxsearchBundle": ""
+      "Verdet\\SphinxSearchBundle": ""
     }
   },
-  "target-dir": "Search/SphinxsearchBundle"
+  "target-dir": "Verdet/SphinxSearchBundle"
 }

@@ -25,7 +25,9 @@ sphinxsearch:
         port:   %sphinxsearch_port%
         socket: %sphinxsearch_socket%
     indexer:
+        sudo:   %sphinxsearch_indexer_sudo%
         bin:    %sphinxsearch_indexer_bin%
+        config: %sphinxsearch_indexer_config%
 ```
 
 At least one index must be defined, and you may define as many as you like.
