@@ -40,7 +40,7 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('indexer')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->scalarNode('sudo')->defaultValue(false)->end()
+                        ->booleanNode('sudo')->defaultValue(false)->end()
                         ->scalarNode('bin')->defaultValue('/usr/bin/indexer')->end()
                         ->scalarNode('config')->defaultNull()->end()
                     ->end()

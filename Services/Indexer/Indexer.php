@@ -4,88 +4,123 @@ namespace Verdet\SphinxSearchBundle\Services\Indexer;
 
 use Assetic\Util\ProcessBuilder;
 
+/**
+ * Indexer
+ */
 class Indexer
 {
-	/**
-	 * @var string $bin
-	 */
-	private $bin;
+    /**
+     * @var string
+     */
+    protected $bin;
 
-	/**
-	 * @var array $indexes
-	 *
-	 * $this->indexes should have the format:
-	 *
-	 *	$this->indexes = array(
-	 *		'IndexLabel' => array(
-	 *			'index_name'	=> 'IndexName',
-	 *			'field_weights'	=> array(
-	 *				'FieldName'	=> (int)'FieldWeight',
-	 *				...,
-	 *			),
-	 *		),
-	 *		...,
-	 *	);
-	 */
-	private $indexes;
+    /**
+     * @var string
+     */
+    protected $config;
 
-	/**
-	 * Constructor.
-	 *
-	 * @param string $bin The path to the indexer executable.
-	 * @param array $indexes The list of indexes that can be used.
-	 */
-	public function __construct($bin = '/usr/bin/indexer', array $indexes = array())
-	{
-		$this->bin = $bin;
-		$this->indexes = $indexes;
-	}
+    /**
+     * @var boolean
+     */
+    protected $sudo;
 
-	/**
-	 * Rebuild and rotate all indexes.
-	 */
-	public function rotateAll()
-	{
-		$this->rotate(array_keys($this->indexes));
-	}
+    /**
+     * @var array $indexes
+     */
+    private $indexes;
 
-	/**
-	 * Rebuild and rotate the specified index(es).
-	 *
-	 * @param array|string $indexes The index(es) to rotate.
-	 */
-	public function rotate($indexes)
-	{
-		$pb = new ProcessBuilder();
-		$pb
-			->inheritEnvironmentVariables()
-			->add($this->bin)
-			->add('--rotate')
-		;
-		if( is_array($indexes) ) {
-			foreach( $indexes as &$label ) {
-				if( isset($this->indexes[$label]) )
-					$pb->add($this->indexes[$label]['index_name']);
-			}
-		} elseif( is_string($indexes) ) {
-			if( isset($this->indexes[$indexes]) )
-				$pb->add($this->indexes[$indexes]['index_name']);
-		} else {
-			throw new \RuntimeException(sprintf('Indexes can only be an array or string, %s given.', gettype($indexes)));
-		}
-		/**
-		 * FIXME: Throw an error if no valid indexes were provided?
-		 */
+    /**
+     * Constructor.
+     *
+     * @param string  $bin     The path to the indexer executable.
+     * @param string  $config  The path to the sphinx config
+     * @param boolean $sudo    Use sudo for indexing
+     * @param array   $indexes The list of indexes that can be used.
+     */
+    public function __construct($bin, $config, $sudo, array $indexes = array())
+    {
+        $this->bin = $bin;
+        $this->config = $config;
+        $this->sudo = $sudo;
+        $this->indexes = $indexes;
+    }
 
-		$indexer = $pb->getProcess();
-		$code = $indexer->run();
+    /**
+     * Rebuild and rotate all indexes.
+     */
+    public function rotateAll()
+    {
+        $pb = $this->prepareProcessBuilder();
+        $pb->add('--all');
 
-		if( ($errStart = strpos($indexer->getOutput(), 'FATAL:')) !== false ) {
-			if( ($errEnd = strpos($indexer->getOutput(), "\n", $errStart)) !== false )
-				$errMsg = substr($indexer->getOutput(), $errStart, $errEnd);
-			else
-				$errMsg = substr($indexer->getOutput(), $errStart);
-			throw new \RuntimeException(sprintf('Error rotating indexes: "%s".', rtrim($errMsg)));
-		}
-	}
+        $indexer = $pb->getProcess();
+        $indexer->run();
+
+        if (strstr($indexer->getOutput(), 'FATAL:') || strstr($indexer->getOutput(), 'ERROR:')) {
+            throw new \RuntimeException(sprintf('Error rotating indexes: "%s".', rtrim($indexer->getOutput())));
+        }
+
+    }
+
+    /**
+     * Rebuild and rotate the specified index(es).
+     *
+     * @param array|string $indexes The index(es) to rotate.
+     *
+     * @throws \RuntimeException
+     */
+    public function rotate($indexes)
+    {
+
+        $pb = $this->prepareProcessBuilder();
+
+        if (is_array($indexes)) {
+            foreach ($indexes as &$label) {
+                if (isset($this->indexes[$label])) {
+                    $pb->add($this->indexes[$label]['index_name']);
+                }
+            }
+        } elseif (is_string($indexes)) {
+            if (isset($this->indexes[$indexes])) {
+                $pb->add($this->indexes[$indexes]['index_name']);
+            }
+        } else {
+            throw new \RuntimeException(sprintf(
+                'Indexes can only be an array or string, %s given.',
+                gettype($indexes)
+            ));
+        }
+
+        $indexer = $pb->getProcess();
+        $indexer->run();
+
+        if (strstr($indexer->getOutput(), 'FATAL:') || strstr($indexer->getOutput(), 'ERROR:')) {
+
+            throw new \RuntimeException(sprintf('Error rotating indexes: "%s".', rtrim($indexer->getOutput())));
+        }
+    }
+
+    /**
+     * Prepare process builder
+     *
+     * @return ProcessBuilder
+     */
+    protected function prepareProcessBuilder()
+    {
+        $pb = new ProcessBuilder();
+        $pb->inheritEnvironmentVariables();
+
+        if ($this->sudo) {
+            $pb->add('sudo');
+        }
+        $pb->add($this->bin);
+        if ($this->config) {
+            $pb->add('--config')
+                ->add($this->config);
+        }
+
+        $pb->add('--rotate');
+
+        return $pb;
+    }
 }

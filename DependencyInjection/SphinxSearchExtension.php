@@ -9,7 +9,10 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-class SphinxsearchExtension extends Extension
+/**
+ * Sphinx Search Extension
+ */
+class SphinxSearchExtension extends Extension
 {
     /**
      * {@inheritDoc}

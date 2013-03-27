@@ -6,12 +6,14 @@
 
     <parameters>
         <parameter key="search.sphinxsearch.indexer.class">Verdet\SphinxSearchBundle\Services\Indexer\Indexer</parameter>
-        <parameter key="search.sphinxsearch.search.class">Verdet\SphinxSearchBundle\Services\Search\Sphinxsearch</parameter>
+        <parameter key="search.sphinxsearch.search.class">Verdet\SphinxSearchBundle\Services\Search\SphinxSearch</parameter>
     </parameters>
 
     <services>
         <service id="search.sphinxsearch.indexer" class="%search.sphinxsearch.indexer.class%">
             <argument>%search.sphinxsearch.indexer.bin%</argument>
+            <argument>%search.sphinxsearch.indexer.config%</argument>
+            <argument>%search.sphinxsearch.indexer.sudo%</argument>
             <argument>%search.sphinxsearch.indexes%</argument>
         </service>
 
