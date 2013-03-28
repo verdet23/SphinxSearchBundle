@@ -19,7 +19,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('sphinxsearch');
+        $rootNode = $treeBuilder->root('sphinx_search');
 
         $this->addIndexerSection($rootNode);
         $this->addIndexesSection($rootNode);

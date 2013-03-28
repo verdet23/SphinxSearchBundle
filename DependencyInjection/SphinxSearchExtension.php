@@ -55,6 +55,6 @@ class SphinxSearchExtension extends Extension
      */
     public function getAlias()
     {
-        return 'sphinxsearch';
+        return 'sphinx_search';
     }
 }

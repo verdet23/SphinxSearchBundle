@@ -2,7 +2,7 @@
 
 namespace Verdet\SphinxSearchBundle\Services\Indexer;
 
-use Assetic\Util\ProcessBuilder;
+use Symfony\Component\Process\ProcessBuilder;
 
 /**
  * Indexer
@@ -77,12 +77,12 @@ class Indexer
         if (is_array($indexes)) {
             foreach ($indexes as &$label) {
                 if (isset($this->indexes[$label])) {
-                    $pb->add($this->indexes[$label]['index_name']);
+                    $pb->add($this->indexes[$label]);
                 }
             }
         } elseif (is_string($indexes)) {
             if (isset($this->indexes[$indexes])) {
-                $pb->add($this->indexes[$indexes]['index_name']);
+                $pb->add($this->indexes[$indexes]);
             }
         } else {
             throw new \RuntimeException(sprintf(
@@ -95,9 +95,30 @@ class Indexer
         $indexer->run();
 
         if (strstr($indexer->getOutput(), 'FATAL:') || strstr($indexer->getOutput(), 'ERROR:')) {
-
             throw new \RuntimeException(sprintf('Error rotating indexes: "%s".', rtrim($indexer->getOutput())));
         }
+    }
+
+    /**
+     * Check, if index configured
+     *
+     * @param string $index
+     *
+     * @return bool
+     */
+    public function checkIndex($index)
+    {
+        return in_array($index, $this->indexes);
+    }
+
+    /**
+     * Get available indexes
+     *
+     * @return array
+     */
+    public function getIndexes()
+    {
+        return array_keys($this->indexes);
     }
 
     /**
