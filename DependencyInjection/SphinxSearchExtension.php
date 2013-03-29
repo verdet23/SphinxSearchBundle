@@ -45,7 +45,7 @@ class SphinxSearchExtension extends Extension
          */
         if (isset($config['searchd'])) {
             $container->setParameter('search.sphinxsearch.searchd.host', $config['searchd']['host']);
-            $container->setParameter('search.sphinxsearch.searchd.port', $config['searchd']['port']);
+            $container->setParameter('search.sphinxsearch.searchd.port', (int) $config['searchd']['port']);
             $container->setParameter('search.sphinxsearch.searchd.socket', $config['searchd']['socket']);
         }
     }
