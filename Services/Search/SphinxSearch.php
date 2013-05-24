@@ -300,6 +300,19 @@ class SphinxSearch
     }
 
     /**
+     * Set range filter
+     *
+     * @param string $attribute Attribute name
+     * @param float  $min       Min range value
+     * @param float  $max       Max range value
+     * @param bool   $exclude   Is this an exclusion filter?
+     */
+    public function setFilterRange($attribute, $min, $max, $exclude = false)
+    {
+        $this->sphinx->SetFilterRange($attribute, $min, $max, $exclude);
+    }
+
+    /**
      * Set sort mode
      *
      * @param int    $mode   Match sorting mode
