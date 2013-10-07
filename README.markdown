@@ -16,7 +16,7 @@ How you actually download the bundle is entirely up to you.  The easiest way is 
 ### Step 2: Configure the bundle
 
 ``` yaml
-sphinxsearch:
+sphinx_search:
     indexes:
         Categories: %sphinxsearch_index_categories%
         Items:      %sphinxsearch_index_items%
