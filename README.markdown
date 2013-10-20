@@ -6,12 +6,23 @@ This bundle is a fork of [timewasted/Search-SphinxsearchBundle](https://github.c
 Installation:
 -------------
 
-1. Download the bundle
+1. Download the bundle using composer
 2. Configure the bundle
 
 ### Step 1: Download the bundle
 
-How you actually download the bundle is entirely up to you.  The easiest way is to grab it from [packagist.org](http://packagist.org/).
+Add SphinxSearchBundle in your composer.json:
+
+```js
+{
+    "require": {
+        "verdet/sphinxsearch-bundle": "*",
+        "neutron/sphinxsearch-api": "*"
+    }
+}
+```
+Bundle require SphinxApi via "neutron/sphinxsearch-api", 
+specify it version according to your sphinxsearch system package version.
 
 ### Step 2: Configure the bundle
 
