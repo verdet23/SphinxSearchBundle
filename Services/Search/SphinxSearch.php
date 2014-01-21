@@ -43,8 +43,6 @@ class SphinxSearch
      */
     public function __construct($host = 'localhost', $port = '9312', $socket = null, array $indexes = array())
     {
-//        require_once __DIR__ . '/SphinxAPI.php';
-
         $this->host = $host;
         $this->port = $port;
         $this->socket = $socket;
@@ -157,8 +155,6 @@ class SphinxSearch
 
         /**
          * If no valid indexes were specified, return an empty result set.
-         *
-         * FIXME: This should probably throw an exception.
          */
         if (empty($indexNames)) {
             return array();
