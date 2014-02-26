@@ -152,7 +152,9 @@ class SphinxSearch
                 $indexNames .= $this->indexes[$label] . ' ';
             }
         }
-
+        
+        $indexNames = trim($indexNames);
+        
         /**
          * If no valid indexes were specified, return an empty result set.
          */
