@@ -320,4 +320,14 @@ class SphinxSearch
     {
         $this->sphinx->SetSortMode($mode, $sortBy);
     }
+    
+    /**
+     * Set select clause
+     * 
+     * @param string $select    Select clause
+     */
+    public function setSelect($select)
+    {
+        $this->sphinx->SetSelect($select);
+    }
 }
