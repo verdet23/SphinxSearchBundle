@@ -325,10 +325,20 @@ class SphinxSearch
      * Set select clause
      * 
      * @param string $select    Select clause
-     * @return void
      */
     public function setSelect($select)
     {
-        return $this->sphinx->SetSelect($select);
+        $this->sphinx->SetSelect($select);
+    }
+    
+    /**
+     * Set ranking mode
+     * 
+     * @param int    $ranker     Ranking mode.
+     * @param string $rankexpr   Ranking expression.
+     */
+    public function setRankingMode($ranker, $rankexpr="")
+    {
+        $this->sphinx->SetRankingMode($ranker, $rankexpr);
     }
 }
