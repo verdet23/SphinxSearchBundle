@@ -320,14 +320,25 @@ class SphinxSearch
     {
         $this->sphinx->SetSortMode($mode, $sortBy);
     }
-    
+
     /**
      * Set select clause
      * 
-     * @param string $select    Select clause
+     * @param string $select Select clause
      */
     public function setSelect($select)
     {
         $this->sphinx->SetSelect($select);
+    }
+
+    /**
+     * Set ranking mode
+     * 
+     * @param int    $rankMode Ranking mode.
+     * @param string $rankExpr Ranking expression.
+     */
+    public function setRankingMode($rankMode, $rankExpr = "")
+    {
+        $this->sphinx->SetRankingMode($rankMode, $rankExpr);
     }
 }
