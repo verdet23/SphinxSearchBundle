@@ -325,11 +325,10 @@ class SphinxSearch
      * Set select clause
      * 
      * @param string $select    Select clause
-     * @return \Verdet\SphinxSearchBundle\Services\Search\SphinxSearch
+     * @return void
      */
     public function setSelect($select)
     {
-        $this->sphinx->SetSelect($select);
-        return $this;
+        return $this->sphinx->SetSelect($select);
     }
 }
