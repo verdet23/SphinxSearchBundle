@@ -330,6 +330,5 @@ class SphinxSearch
     public function setSelect($select)
     {
         $this->sphinx->SetSelect($select);
-        return $this;
     }
 }
