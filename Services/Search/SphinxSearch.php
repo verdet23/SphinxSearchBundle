@@ -259,7 +259,7 @@ class SphinxSearch
     }
 
     /**
-     * Reset filters, group by, overrides
+     * Reset filters, group by, overrides, limits
      */
     public function resetAll()
     {
@@ -267,6 +267,15 @@ class SphinxSearch
         $this->sphinx->ResetGroupBy();
         $this->sphinx->ResetOverrides();
         $this->sphinx->SetSortMode(SPH_SORT_RELEVANCE);
+        $this->resetLimits();
+    }
+    
+    /**
+     * Reset limits
+     */
+    public function resetLimits()
+    {
+        $this->sphinx->SetLimits(0, 20, 1000, 0);
     }
 
     /**
