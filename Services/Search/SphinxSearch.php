@@ -181,11 +181,20 @@ class SphinxSearch
          */
         $results = $this->sphinx->query($query, $indexNames);
         if ($results['status'] !== SEARCHD_OK) {
+            if($results['status'] === SEARCHD_ERROR) {
+                $errorType = 'error';
+                $errorText = $this->sphinx->getLastError();
+            } else {
+                $errorType = 'warning';
+                $errorText = $this->sphinx->getLastWarning();
+            }
+
             throw new \RuntimeException(sprintf(
-                'Searching index "%s" for "%s" failed with error "%s".',
+                'Searching index "%s" for "%s" failed with %s "%s".',
                 $label,
                 $query,
-                $this->sphinx->getLastError()
+                $errorType,
+                $errorText
             ));
         }
 
@@ -269,7 +278,7 @@ class SphinxSearch
         $this->sphinx->SetSortMode(SPH_SORT_RELEVANCE);
         $this->resetLimits();
     }
-    
+
     /**
      * Reset limits
      */
@@ -332,7 +341,7 @@ class SphinxSearch
 
     /**
      * Set select clause
-     * 
+     *
      * @param string $select Select clause
      */
     public function setSelect($select)
@@ -342,7 +351,7 @@ class SphinxSearch
 
     /**
      * Set ranking mode
-     * 
+     *
      * @param int    $rankMode Ranking mode.
      * @param string $rankExpr Ranking expression.
      */
