@@ -180,23 +180,21 @@ class SphinxSearch
          * Perform the query.
          */
         $results = $this->sphinx->query($query, $indexNames);
-        if ($results['status'] !== SEARCHD_OK) {
-            if($results['status'] === SEARCHD_ERROR) {
-                $errorType = 'error';
-                $errorText = $this->sphinx->getLastError();
-            } else {
-                $errorType = 'warning';
+        if ($results === false || $results['status'] !== SEARCHD_OK) {
+            if(is_array($results) && $results['status'] === SEARCHD_WARNING) {
                 $errorText = $this->sphinx->getLastWarning();
+            } else {
+                $errorText = $this->sphinx->getLastError();
             }
 
             throw new \RuntimeException(sprintf(
-                'Searching index "%s" for "%s" failed with %s "%s".',
+                'Searching index "%s" for "%s" failed with message "%s".',
                 $label,
                 $query,
-                $errorType,
                 $errorText
             ));
         }
+
 
         return $results;
     }
